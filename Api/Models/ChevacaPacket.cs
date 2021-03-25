@@ -17,10 +17,8 @@ namespace Api.Models
         public int FCnt { get; set; }
         public int FPort { get; set; }
         public string Data { get; set; }
-        public int? ObjectJsonobjectId { get; set; }
+        public int? PaylodId { get; set; }
         public bool ConfirmedUplink { get; set; }
         public string DevAddr { get; set; }
-
-        public virtual ObjetoJson ObjectJsonobject { get; set; }
     }
 }

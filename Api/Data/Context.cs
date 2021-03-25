@@ -19,7 +19,7 @@ namespace Api.Data
         }
 
         public virtual DbSet<ChevacaPacket> ChevacaPackets { get; set; }
-        public virtual DbSet<ObjetoJson> ObjetoJsons { get; set; }
+        public virtual DbSet<Payload> Payloads { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -42,19 +42,35 @@ namespace Api.Data
 
                 entity.Property(e => e.Adr).HasColumnName("adr");
 
-                entity.Property(e => e.ApplicationId).HasColumnName("applicationID");
+                entity.Property(e => e.ApplicationId)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("applicationID");
 
-                entity.Property(e => e.ApplicationName).HasColumnName("applicationName");
+                entity.Property(e => e.ApplicationName)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("applicationName");
 
                 entity.Property(e => e.ConfirmedUplink).HasColumnName("confirmedUplink");
 
-                entity.Property(e => e.Data).HasColumnName("data");
+                entity.Property(e => e.Data)
+                    .IsUnicode(false)
+                    .HasColumnName("data");
 
-                entity.Property(e => e.DevAddr).HasColumnName("devAddr");
+                entity.Property(e => e.DevAddr)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("devAddr");
 
-                entity.Property(e => e.DevEui).HasColumnName("devEUI");
+                entity.Property(e => e.DevEui)
+                    .IsUnicode(false)
+                    .HasColumnName("devEUI");
 
-                entity.Property(e => e.DeviceName).HasColumnName("deviceName");
+                entity.Property(e => e.DeviceName)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("deviceName");
 
                 entity.Property(e => e.Dr).HasColumnName("dr");
 
@@ -62,24 +78,44 @@ namespace Api.Data
 
                 entity.Property(e => e.FPort).HasColumnName("fPort");
 
-                entity.Property(e => e.ObjectJsonobjectId).HasColumnName("objectJSONObjectID");
-
-                entity.HasOne(d => d.ObjectJsonobject)
-                    .WithMany(p => p.ChevacaPackets)
-                    .HasForeignKey(d => d.ObjectJsonobjectId);
+                entity.Property(e => e.PaylodId).HasColumnName("paylodID");
             });
 
-            modelBuilder.Entity<ObjetoJson>(entity =>
+            modelBuilder.Entity<Payload>(entity =>
             {
-                entity.HasKey(e => e.ObjectId);
+                entity.HasKey(e => e.ObjectId)
+                    .HasName("PK_ObjetoJson");
 
-                entity.ToTable("ObjetoJson");
+                entity.ToTable("Payload");
 
                 entity.Property(e => e.ObjectId).HasColumnName("ObjectID");
 
                 entity.Property(e => e.Alt).HasColumnName("alt");
 
-                entity.Property(e => e.DeviceName).HasColumnName("deviceName");
+                entity.Property(e => e.ApplicationId)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("applicationID");
+
+                entity.Property(e => e.ApplicationName)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("applicationName");
+
+                entity.Property(e => e.DevAddr)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("devAddr");
+
+                entity.Property(e => e.DevEui)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("devEUI");
+
+                entity.Property(e => e.DeviceName)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("deviceName");
 
                 entity.Property(e => e.EndDateTime).HasColumnName("endDateTime");
 
@@ -87,7 +123,9 @@ namespace Api.Data
                     .HasColumnType("decimal(18, 2)")
                     .HasColumnName("hdop");
 
-                entity.Property(e => e.Info).HasColumnName("info");
+                entity.Property(e => e.Info)
+                    .IsUnicode(false)
+                    .HasColumnName("info");
 
                 entity.Property(e => e.Lat)
                     .HasColumnType("decimal(12, 5)")
