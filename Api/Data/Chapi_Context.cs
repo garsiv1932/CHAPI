@@ -24,10 +24,15 @@ namespace Api.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
+            if (optionsBuilder != null)
             {
-                optionsBuilder.UseSqlServer( _configuraciones.ConnectionString_chapi);
-                //optionsBuilder.UseSqlServer("Server=localhost;Database=chapidb;User Id=chevaca_login; Password=chevaca1234;");
+                if (!optionsBuilder.IsConfigured)
+                {
+                    if (!string.IsNullOrWhiteSpace(_configuraciones.ConnectionString_chapi))
+                    {
+                        optionsBuilder.UseSqlServer(_configuraciones.ConnectionString_chapi);
+                    }
+                }
             }
         }
 

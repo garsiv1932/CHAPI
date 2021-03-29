@@ -16,8 +16,6 @@ namespace Api
 
         public Configuraciones()
         {
-            IHttpContextAccessor accessor = new HttpContextAccessor();
-
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json"), optional: false)
                 .AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.Development.json"), optional: false)
