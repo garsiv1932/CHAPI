@@ -11,17 +11,18 @@ namespace Api
 {
     public class Program
     {
+        private static Configuraciones _configuraciones = new ();
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
         }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        public static IHostBuilder CreateHostBuilder(string[] args) => 
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls("http://192.168.1.44:5001/");
+                    webBuilder.UseUrls(_configuraciones.WebBuilder_URL);
+                    //webBuilder.UseUrls("http://192.168.1.44:5001/");
                     // webBuilder.UseUrls("http://172.0.0.1/");
                 });
     }
