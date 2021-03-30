@@ -1,7 +1,7 @@
 ﻿using System;
+using Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Api.Models;
 
 #nullable disable
 
@@ -9,7 +9,7 @@ namespace Api.Data
 {
     public partial class Chapi_Context : DbContext
     {
-        private Configuraciones _configuraciones = new ();
+        private Configuraciones _configuraciones = new();
         public Chapi_Context()
         {
         }
@@ -19,7 +19,7 @@ namespace Api.Data
         {
         }
 
-        public virtual DbSet<ChevacaPacket> ChevacaPackets { get; set; }
+        public virtual DbSet<PaquetesLora> PaquetesLoras { get; set; }
         public virtual DbSet<Payload> Payloads { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -40,108 +40,102 @@ namespace Api.Data
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
-            modelBuilder.Entity<ChevacaPacket>(entity =>
+            modelBuilder.Entity<PaquetesLora>(entity =>
             {
-                entity.HasKey(e => e.PacketId);
+                entity.HasKey(e => e.PaqueteLoraId);
 
-                entity.Property(e => e.PacketId).HasColumnName("PacketID");
+                entity.ToTable("paquetes_lora");
 
-                entity.Property(e => e.Adr).HasColumnName("adr");
+                entity.Property(e => e.PaqueteLoraId).HasColumnName("Paquete_lora_ID");
 
                 entity.Property(e => e.ApplicationId)
-                    .HasMaxLength(200)
+                    .HasMaxLength(50)
                     .IsUnicode(false)
-                    .HasColumnName("applicationID");
+                    .HasColumnName("ApplicationID");
 
                 entity.Property(e => e.ApplicationName)
-                    .HasMaxLength(200)
-                    .IsUnicode(false)
-                    .HasColumnName("applicationName");
-
-                entity.Property(e => e.ConfirmedUplink).HasColumnName("confirmedUplink");
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Data)
-                    .IsUnicode(false)
-                    .HasColumnName("data");
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.DevAddr)
-                    .HasMaxLength(200)
-                    .IsUnicode(false)
-                    .HasColumnName("devAddr");
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.DevEui)
+                    .HasMaxLength(100)
                     .IsUnicode(false)
-                    .HasColumnName("devEUI");
+                    .HasColumnName("DevEUI");
 
                 entity.Property(e => e.DeviceName)
-                    .HasMaxLength(200)
-                    .IsUnicode(false)
-                    .HasColumnName("deviceName");
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Dr).HasColumnName("dr");
+                entity.Property(e => e.Fcnt).HasColumnName("FCnt");
 
-                entity.Property(e => e.FCnt).HasColumnName("fCnt");
+                entity.Property(e => e.Fport).HasColumnName("FPort");
 
-                entity.Property(e => e.FPort).HasColumnName("fPort");
-
-                entity.Property(e => e.PaylodId).HasColumnName("paylodID");
+                entity.Property(e => e.PayloadId).HasColumnName("Paylod_ID");
             });
 
             modelBuilder.Entity<Payload>(entity =>
             {
-                entity.HasKey(e => e.ObjectId)
-                    .HasName("PK_ObjetoJson");
+                entity.ToTable("payloads");
 
-                entity.ToTable("Payload");
+                entity.Property(e => e.PayloadId).HasColumnName("Payload_ID");
 
-                entity.Property(e => e.ObjectId).HasColumnName("ObjectID");
-
-                entity.Property(e => e.Alt).HasColumnName("alt");
+                entity.Property(e => e.Alt)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.ApplicationId)
-                    .HasMaxLength(200)
+                    .HasMaxLength(50)
                     .IsUnicode(false)
-                    .HasColumnName("applicationID");
+                    .HasColumnName("ApplicationID");
 
                 entity.Property(e => e.ApplicationName)
-                    .HasMaxLength(200)
-                    .IsUnicode(false)
-                    .HasColumnName("applicationName");
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DatetimeFin).HasColumnName("Datetime_Fin");
+
+                entity.Property(e => e.DatetimeInicio).HasColumnName("Datetime_Inicio");
 
                 entity.Property(e => e.DevAddr)
-                    .HasMaxLength(200)
-                    .IsUnicode(false)
-                    .HasColumnName("devAddr");
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.DevEui)
-                    .HasMaxLength(200)
+                    .HasMaxLength(100)
                     .IsUnicode(false)
-                    .HasColumnName("devEUI");
+                    .HasColumnName("DevEUI");
 
                 entity.Property(e => e.DeviceName)
-                    .HasMaxLength(200)
-                    .IsUnicode(false)
-                    .HasColumnName("deviceName");
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.EndDateTime).HasColumnName("endDateTime");
+                entity.Property(e => e.Gateway)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Hdop)
-                    .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("hdop");
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Info)
-                    .IsUnicode(false)
-                    .HasColumnName("info");
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Lat)
-                    .HasColumnType("decimal(12, 5)")
-                    .HasColumnName("lat");
+                entity.Property(e => e.Latitud)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Lon)
-                    .HasColumnType("decimal(12, 5)")
-                    .HasColumnName("lon");
-
-                entity.Property(e => e.StartDateTime).HasColumnName("startDateTime");
+                entity.Property(e => e.Longitud)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

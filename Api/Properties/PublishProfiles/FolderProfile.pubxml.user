@@ -5,6 +5,6 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\Gonzalo\Desktop\CH_API_Publish</_PublishTargetUrl>
-    <History>True|2021-03-29T07:38:30.4220936Z;</History>
+    <History>True|2021-03-30T04:30:19.9800924Z;True|2021-03-30T01:24:53.1237569-03:00;True|2021-03-29T04:38:30.4220936-03:00;</History>
   </PropertyGroup>
 </Project>
