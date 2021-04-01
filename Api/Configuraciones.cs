@@ -23,7 +23,7 @@ namespace Api
                 .Build();
 
             ConnectionString_chapi = configuration.GetConnectionString("ConnectionString_chapi");
-            Error_log_file = configuration.GetConnectionString("Error_log_file");
+            Error_log_file = configuration.GetSection("Error_log_file").Value;
             WebBuilder_URL = configuration.GetSection("WebBuilder_URL").Value;
         }
     }

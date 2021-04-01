@@ -16,6 +16,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Api.Models;
+using System.Linq;
+using System.ComponentModel.DataAnnotations;
 
 namespace Api.Controllers
 {
@@ -23,11 +25,17 @@ namespace Api.Controllers
     [Route("[controller]")]
     public class GetLorawanPackagesController : ControllerBase
     {
-        public Chapi_Context conexto = new();
+        public ChapiDB_Context conexto = new();
 
         [HttpPost]
         public IActionResult Post(JsonDocument objectJSON)
         {
+            // Logger variables
+            System.Diagnostics.StackTrace stackTrace = new(true);
+            System.Diagnostics.StackFrame stackFrame = new();
+            string className = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name;
+            string methodName = stackFrame.GetMethod().Name;
+
             if (objectJSON != null)
             {
                 string _objectJSON = objectJSON.RootElement.ToString();
@@ -46,7 +54,7 @@ namespace Api.Controllers
                                 Payload_AUX _payload_AUX = _paquetesLora_AUX.ObjectJSON;
                                 if (_payload_AUX != null)
                                 {
-                                    Payload _payload = new ();
+                                    Payload _payload = new();
                                     _payload.Alt = _payload_AUX.alt.ToString();
                                     _payload.Hdop = _payload_AUX.hdop.ToString();
                                     _payload.Info = _payload_AUX.info;
@@ -60,7 +68,7 @@ namespace Api.Controllers
                                     _payload.ApplicationId = _paquetesLora_AUX.ApplicationId;
                                     _payload.ApplicationName = _paquetesLora_AUX.ApplicationName;
 
-                                    PaquetesLora _paquetesLora = new ();
+                                    PaquetesLora _paquetesLora = new();
                                     _paquetesLora.PayloadId = _paquetesLora_AUX.PacketId;
                                     _paquetesLora.Adr = _paquetesLora_AUX.Adr;
                                     _paquetesLora.Data = _paquetesLora_AUX.Data;
@@ -76,7 +84,20 @@ namespace Api.Controllers
 
                                     conexto.PaquetesLoras.Add(_paquetesLora);
                                     conexto.Payloads.Add(_payload);
-                                    conexto.SaveChanges();
+                                    try
+                                    {
+                                        conexto.SaveChanges();
+                                    }
+                                    catch (ValidationException ex)
+                                    {
+                                        Logs_Service.Log_AgregarExcepcion("Excepcion. Guardando en la BD. ERROR:", className, methodName, ex.Message);
+                                        return BadRequest();
+                                    }
+                                    catch (DbUpdateException ex)
+                                    {
+                                        Logs_Service.Log_AgregarExcepcion("Excepcion. Guardando en la BD. ERROR:", className, methodName, ex.Message);
+                                        return BadRequest();
+                                    }
                                     return Ok();
                                 }
                             }

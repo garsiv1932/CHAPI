@@ -1,0 +1,5 @@
+01/04/2021 00:47:09: [ln:98] GetLorawanPackagesController: Post() - Excepcion. Guardando en la BD. ERROR: An error occurred while updating the entries. See the inner exception for details..
+01/04/2021 00:47:19: [ln:98] GetLorawanPackagesController: Post() - Excepcion. Guardando en la BD. ERROR: An error occurred while updating the entries. See the inner exception for details..
+01/04/2021 00:47:31: [ln:98] GetLorawanPackagesController: Post() - Excepcion. Guardando en la BD. ERROR: An error occurred while updating the entries. See the inner exception for details..
+01/04/2021 00:47:48: [ln:98] GetLorawanPackagesController: Post() - Excepcion. Guardando en la BD. ERROR: An error occurred while updating the entries. See the inner exception for details..
+01/04/2021 00:48:04: [ln:98] GetLorawanPackagesController: Post() - Excepcion. Guardando en la BD. ERROR: An error occurred while updating the entries. See the inner exception for details..
