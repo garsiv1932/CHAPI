@@ -29,34 +29,5 @@ namespace Api
             }
             catch (Exception) { }
         }
-
-        public static void Log_AgregarAccion(string message, string object_ID, string userID_str, string username, string IP_client = "")
-        {
-            // Logger variables
-            System.Diagnostics.StackTrace stackTrace = new (true);
-            System.Diagnostics.StackFrame stackFrame = new ();
-            string className = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name;
-            string methodName = stackFrame.GetMethod().Name;
-
-            using (ChapiDB_Context context = new())
-            {
-                Log _logs = new();
-                _logs.FechaCreado = GlobalVariables_Service.GetCurrentTime();
-                _logs.Usuario = username;
-                _logs.Descripcion = message;
-                _logs.DatoAfectado = object_ID;
-                _logs.IpClient = IP_client;
-
-                int userID = 0;
-                if (!int.TryParse(userID_str, out userID))
-                {
-                    userID = 0;
-                    Log_AgregarExcepcion("Excepcion. Convirtiendo int. ERROR:", className, methodName, userID_str);
-                }
-                _logs.UsuarioId = userID;
-                context.Logs.Add(_logs);
-                context.SaveChanges();
-            }
-        }
     }
 }

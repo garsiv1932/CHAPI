@@ -1,7 +1,7 @@
 ﻿using System;
-using Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Api.Models;
 
 #nullable disable
 
@@ -19,7 +19,6 @@ namespace Api.Data
         {
         }
 
-        public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<PaquetesLora> PaquetesLoras { get; set; }
         public virtual DbSet<Payload> Payloads { get; set; }
 
@@ -40,17 +39,6 @@ namespace Api.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
-
-            modelBuilder.Entity<Log>(entity =>
-            {
-                entity.Property(e => e.DatoAfectado).IsUnicode(false);
-
-                entity.Property(e => e.Descripcion).IsUnicode(false);
-
-                entity.Property(e => e.IpClient).IsUnicode(false);
-
-                entity.Property(e => e.Usuario).IsUnicode(false);
-            });
 
             modelBuilder.Entity<PaquetesLora>(entity =>
             {
