@@ -25,7 +25,7 @@ namespace Api.Controllers
     [Route("[controller]")]
     public class GetLorawanPackagesController : ControllerBase
     {
-        public ChapiDB_Context conexto = new();
+        public ChapiDB_Context context = new();
 
         [HttpPost]
         public IActionResult Post(JsonDocument objectJSON)
@@ -54,51 +54,61 @@ namespace Api.Controllers
                                 Payload_AUX _payload_AUX = _paquetesLora_AUX.ObjectJSON;
                                 if (_payload_AUX != null)
                                 {
-                                    Payload _payload = new();
-                                    _payload.Alt = _payload_AUX.alt.ToString();
-                                    _payload.Hdop = _payload_AUX.hdop.ToString();
-                                    _payload.Info = _payload_AUX.info;
-                                    _payload.Latitud = _payload_AUX.lat.ToString();
-                                    _payload.Longitud = _payload_AUX.lon.ToString();
-                                    _payload.DatetimeInicio = DateTime.Now;
-                                    _payload.DatetimeFin = DateTime.Now;
-                                    _payload.DeviceName = _paquetesLora_AUX.DeviceName;
-                                    _payload.DevEui = _paquetesLora_AUX.DevEui;
-                                    _payload.DevAddr = _paquetesLora_AUX.DevAddr;
-                                    _payload.ApplicationId = _paquetesLora_AUX.ApplicationId;
-                                    _payload.ApplicationName = _paquetesLora_AUX.ApplicationName;
+                                    String dev_eui_str = _paquetesLora_AUX.DevEui;
+                                    if (!string.IsNullOrWhiteSpace(dev_eui_str))
+                                    {
+                                        int dev_eui_ID = BitConverter.ToInt32(Encoding.ASCII.GetBytes(dev_eui_str), 0);
+                                        if (dev_eui_ID > 0)
+                                        {
+                                            Payloads _payload = new();
 
-                                    PaquetesLora _paquetesLora = new();
-                                    _paquetesLora.PayloadId = _paquetesLora_AUX.PacketId;
-                                    _paquetesLora.Adr = _paquetesLora_AUX.Adr;
-                                    _paquetesLora.Data = _paquetesLora_AUX.Data;
-                                    _paquetesLora.Dr = _paquetesLora_AUX.Dr;
-                                    _paquetesLora.ApplicationId = _paquetesLora_AUX.ApplicationId;
-                                    _paquetesLora.ApplicationName = _paquetesLora_AUX.ApplicationName;
-                                    _paquetesLora.ConfirmedUplink = _paquetesLora_AUX.ConfirmedUplink;
-                                    _paquetesLora.DevAddr = _paquetesLora_AUX.DevAddr;
-                                    _paquetesLora.DevEui = _paquetesLora_AUX.DevEui;
-                                    _paquetesLora.DeviceName = _paquetesLora_AUX.DeviceName;
-                                    _paquetesLora.Fcnt = _paquetesLora_AUX.FCnt;
-                                    _paquetesLora.Fport = _paquetesLora_AUX.FPort;
+                                            _payload.DeviceId = dev_eui_ID;
+                                            _payload.Alt = _payload_AUX.alt.ToString();
+                                            _payload.Hdop = _payload_AUX.hdop.ToString();
+                                            _payload.Info = _payload_AUX.info;
+                                            _payload.Latitud = _payload_AUX.lat.ToString();
+                                            _payload.Longitud = _payload_AUX.lon.ToString();
+                                            _payload.DatetimeInicio = DateTime.Now;
+                                            _payload.DatetimeFin = DateTime.Now;
+                                            _payload.DeviceName = _paquetesLora_AUX.DeviceName;
+                                            _payload.DevEui = _paquetesLora_AUX.DevEui;
+                                            _payload.DevAddr = _paquetesLora_AUX.DevAddr;
+                                            _payload.ApplicationId = _paquetesLora_AUX.ApplicationId;
+                                            _payload.ApplicationName = _paquetesLora_AUX.ApplicationName;
 
-                                    conexto.PaquetesLoras.Add(_paquetesLora);
-                                    conexto.Payloads.Add(_payload);
-                                    try
-                                    {
-                                        conexto.SaveChanges();
+                                            PaquetesLora _paquetesLora = new();
+                                            _paquetesLora.PayloadId = _paquetesLora_AUX.PacketId;
+                                            _paquetesLora.Adr = _paquetesLora_AUX.Adr;
+                                            _paquetesLora.Data = _paquetesLora_AUX.Data;
+                                            _paquetesLora.Dr = _paquetesLora_AUX.Dr;
+                                            _paquetesLora.ApplicationId = _paquetesLora_AUX.ApplicationId;
+                                            _paquetesLora.ApplicationName = _paquetesLora_AUX.ApplicationName;
+                                            _paquetesLora.ConfirmedUplink = _paquetesLora_AUX.ConfirmedUplink;
+                                            _paquetesLora.DevAddr = _paquetesLora_AUX.DevAddr;
+                                            _paquetesLora.DevEui = _paquetesLora_AUX.DevEui;
+                                            _paquetesLora.DeviceName = _paquetesLora_AUX.DeviceName;
+                                            _paquetesLora.Fcnt = _paquetesLora_AUX.FCnt;
+                                            _paquetesLora.Fport = _paquetesLora_AUX.FPort;
+
+                                            context.PaquetesLora.Add(_paquetesLora);
+                                            context.Payloads.Add(_payload);
+                                            try
+                                            {
+                                                context.SaveChanges();
+                                            }
+                                            catch (ValidationException ex)
+                                            {
+                                                Logs_Service.Log_AgregarExcepcion("Excepcion. Guardando en la BD. ERROR:", className, methodName, ex.Message);
+                                                return BadRequest();
+                                            }
+                                            catch (DbUpdateException ex)
+                                            {
+                                                Logs_Service.Log_AgregarExcepcion("Excepcion. Guardando en la BD. ERROR:", className, methodName, ex.Message);
+                                                return BadRequest();
+                                            }
+                                            return Ok();
+                                        }
                                     }
-                                    catch (ValidationException ex)
-                                    {
-                                        Logs_Service.Log_AgregarExcepcion("Excepcion. Guardando en la BD. ERROR:", className, methodName, ex.Message);
-                                        return BadRequest();
-                                    }
-                                    catch (DbUpdateException ex)
-                                    {
-                                        Logs_Service.Log_AgregarExcepcion("Excepcion. Guardando en la BD. ERROR:", className, methodName, ex.Message);
-                                        return BadRequest();
-                                    }
-                                    return Ok();
                                 }
                             }
                         }

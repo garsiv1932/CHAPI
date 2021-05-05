@@ -9,7 +9,6 @@ namespace Api.Data
 {
     public partial class ChapiDB_Context : DbContext
     {
-        private Configuraciones _configuraciones = new();
         public ChapiDB_Context()
         {
         }
@@ -19,20 +18,15 @@ namespace Api.Data
         {
         }
 
-        public virtual DbSet<PaquetesLora> PaquetesLoras { get; set; }
-        public virtual DbSet<Payload> Payloads { get; set; }
+        public virtual DbSet<PaquetesLora> PaquetesLora { get; set; }
+        public virtual DbSet<Payloads> Payloads { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (optionsBuilder != null)
+            if (!optionsBuilder.IsConfigured)
             {
-                if (!optionsBuilder.IsConfigured)
-                {
-                    if (!string.IsNullOrWhiteSpace(_configuraciones.ConnectionString_chapi))
-                    {
-                        optionsBuilder.UseSqlServer(_configuraciones.ConnectionString_chapi);
-                    }
-                }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=localhost;Database=chapidb;User Id=chevaca_login;Password=chevaca1234; Trusted_Connection=false");
             }
         }
 
@@ -55,7 +49,7 @@ namespace Api.Data
                 entity.Property(e => e.DeviceName).IsUnicode(false);
             });
 
-            modelBuilder.Entity<Payload>(entity =>
+            modelBuilder.Entity<Payloads>(entity =>
             {
                 entity.Property(e => e.Alt).IsUnicode(false);
 

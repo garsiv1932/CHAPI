@@ -1,0 +1,63 @@
+USE [master]
+GO
+/****** Object:  Database [chapidb]    Script Date: 05/05/2021 16:01:45 ******/
+CREATE DATABASE [chapidb]
+GO
+USE [chapidb]
+GO
+/****** Object:  Table [dbo].[paquetes_lora]    Script Date: 05/05/2021 16:01:46 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[paquetes_lora](
+	[Paquete_lora_ID] [int] IDENTITY(1,1) NOT NULL,
+	[Payload_ID] [int] NULL,
+	[ApplicationID] [varchar](50) NULL,
+	[ApplicationName] [varchar](50) NULL,
+	[DeviceName] [varchar](50) NULL,
+	[DevEUI] [varchar](100) NULL,
+	[Adr] [bit] NOT NULL,
+	[Dr] [int] NOT NULL,
+	[FCnt] [int] NOT NULL,
+	[FPort] [int] NOT NULL,
+	[Data] [varchar](200) NULL,
+	[ConfirmedUplink] [bit] NOT NULL,
+	[DevAddr] [varchar](100) NULL,
+ CONSTRAINT [PK_paquetes_lora] PRIMARY KEY CLUSTERED 
+(
+	[Paquete_lora_ID] ASC
+)
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[payloads]    Script Date: 05/05/2021 16:01:46 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[payloads](
+	[Payload_ID] [int] IDENTITY(1,1) NOT NULL,
+	[Device_ID] [int] NULL,
+	[Datetime_Inicio] [datetime2](7) NOT NULL,
+	[Datetime_Fin] [datetime2](7) NOT NULL,
+	[Alt] [varchar](50) NULL,
+	[Hdop] [varchar](50) NULL,
+	[Info] [varchar](200) NULL,
+	[Latitud] [varchar](50) NULL,
+	[Longitud] [varchar](50) NULL,
+	[DeviceName] [varchar](50) NULL,
+	[DevEUI] [varchar](100) NULL,
+	[DevAddr] [varchar](100) NULL,
+	[ApplicationID] [varchar](50) NULL,
+	[ApplicationName] [varchar](50) NULL,
+	[Gateway] [varchar](50) NULL,
+ CONSTRAINT [PK_payloads] PRIMARY KEY CLUSTERED 
+(
+	[Payload_ID] ASC
+) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+USE [master]
+GO
+ALTER DATABASE [chapidb] SET  READ_WRITE 
+GO

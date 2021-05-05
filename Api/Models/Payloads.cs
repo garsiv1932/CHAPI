@@ -9,11 +9,13 @@ using Microsoft.EntityFrameworkCore;
 namespace Api.Models
 {
     [Table("payloads")]
-    public partial class Payload
+    public partial class Payloads
     {
         [Key]
         [Column("Payload_ID")]
         public int PayloadId { get; set; }
+        [Column("Device_ID")]
+        public int? DeviceId { get; set; }
         [Column("Datetime_Inicio")]
         public DateTime DatetimeInicio { get; set; }
         [Column("Datetime_Fin")]
